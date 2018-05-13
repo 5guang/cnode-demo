@@ -1,0 +1,1 @@
+export const CHANGE_PARAMS = 'CHANGE_PARAMS';
