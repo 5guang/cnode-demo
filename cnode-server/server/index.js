@@ -6,7 +6,7 @@ import bodyParser from 'koa-bodyparser';
 
 const router = new Router()
 const app = new Koa();
-router.get('/api/topics', routes.topics);
+router.get('/api/home', routes.topics);
 router.get('/api/topic', routes.topicParams);
 app.use(cors());
 app.use(bodyParser())

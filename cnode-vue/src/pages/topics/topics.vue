@@ -1,29 +1,41 @@
 <template>
   <section>
-    <p>{{home.ad}}</p>
-      <div v-html="params"></div>
+    <nv-header></nv-header>
+      <div v-html="content"></div>
   </section>
 </template>
 
 <script>
-import {mapState, mapMutations} from 'vuex';
+import { mapState, mapMutations } from 'vuex';
+import { topicApi } from '@/api/index';
 
 export default {
   data() {
-    return {};
+    return {
+      content: ''
+    };
   },
   computed: {
-    ...mapState([
-      'params',
-      'home'
-    ])
+    ...mapState(['params', 'home'])
   },
   created() {
-    let params = this.$route.params.id;
-    console.log(params);
-    console.log(this.$router);
+    this.topicApiServer()
+      .then(res => {
+        if (res.data.success) {
+          this.content = res.data.data.content;
+        }
+      })
+      .catch(err => {
+        console.error(err);
+      });
   },
   methods: {
+    topicApiServer() {
+      const params = {
+        id: this.$route.params.id
+      };
+      return topicApi(params);
+    }
   }
 };
 </script>
