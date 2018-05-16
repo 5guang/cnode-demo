@@ -7,10 +7,20 @@
           <li @click='switchMenu(item.label,item.params)' v-for="item in menu" :key="item.label" :class="{'cnode_home--nav-ul_active': currently === item.label, 'cnode_home--nav-ul_li': show}">{{item.value}}</li>
         </ul>
       </nav> 
-      <ul>
-        <li v-for='item in data' :key="item.id" >
-          <router-link :to='`/topics/${item.id}`'>
-            {{item.title}}
+      <ul class="cnode_home-wrap">
+        <li v-for='item in data' :key="item.id" class="cnode_home-wrap_list">
+          <router-link :to='`/topics/${item.id}`' class="cnode_home-wrap_list_link">
+            <div class="cnode_home-wrap_list_link--content">
+              <img class="cnode_home-wrap_list_link--content-img" :src="item.author.avatar_url" alt="">
+              <div class="cnode_home-wrap_list_link--content-title">
+                <p>
+                  <span class="cnode_home-wrap_list_link--content-title-tab" :class="{'cnode_home-wrap_list_link--content-title-top': item.top}">{{item.tab | menu}}</span>
+                </p>
+                <p class="cnode_home-wrap_list_link--content-title_txt">
+                  {{item.title}}
+                </p>
+              </div>
+            </div>
           </router-link>
         </li>
       </ul>
@@ -93,6 +103,23 @@ export default {
       .catch(e => {
         console.error(e);
       });
+  },
+  filters: {
+    menu(val) {
+      let res = 'dsag'
+      const menuList = [
+        {label: 'share', value: '分享'},
+        {label: 'good', value: '精华'},
+        {label: 'ask', value: '问答'},
+        {label: 'job', value: '招聘'},
+      ]
+      menuList.forEach(item => {
+        if (item.label === val) {
+          res = item.value;
+        }
+      })
+      return res;
+    },
   },
   methods: {
     ...mapMutations(['CHANGE_PARAMS']),
