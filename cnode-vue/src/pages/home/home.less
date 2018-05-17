@@ -30,40 +30,69 @@
       &-wrap{
           &_list{
               display: flex;
-            //   justify-content: center;
+              // justify-content: center;
               align-items: center;
               border-bottom: 1px solid #6d706e;
+              width: 100%;
               &_link{
                 height: 100%;
+                width: 100%;
                 font-size: .32rem;
                 color: #141815;
                 &--content{
+                    width: 100%;
                     display: flex;
                     align-items: center;
                     padding: .15rem;
                   &-img{
-                      width: .8rem;
-                      height: .8rem;
+                      width: .6rem;
+                      height: .6rem;
                       border-radius: .1rem;
                   }
                   &-title{
                       padding-left: .2rem;
+                      display: flex;
+                      align-items: center;
+                      &_theme{
+                        width: 1rem;
+                      }
+                      &_reply{
+                        font-size: .1rem;
+                        i{
+                          font-style: normal;
+                          color: #aa6894
+                        }
+                      }
                       &-tab{
                         color:rgb(153, 153, 153);
                         padding: .1rem;
+                        width: .5rem;
+                        // height: .2rem;
+                        // line-height: .2rem;
                         background:rgb(229, 229, 229);
                         border-radius: .05rem;
+                        display: inline-block;
+                        font-size: .1rem;
                       }
                       &-top{
                         color:#fff;
                         padding: .1rem;
                         background: #1abb42;
-                        border-radius: .05rem;
                       }
                       &_txt{
+                        width: 4rem;
+                        padding-left: .3rem; 
                         white-space: nowrap;
                         overflow: hidden;
                         text-overflow: ellipsis;
+                        font-size: .26rem;
+                        display: block;
+                      }
+                      &_time{
+                        text-align: right;
+                        font-size: .1rem;
+                        margin-left: .3rem;
+                        color: rgb(136,136,136);
                       }
                   }
                 }
