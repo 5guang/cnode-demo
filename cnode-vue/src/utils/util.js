@@ -22,7 +22,7 @@ const fmtDate = (date, fmt) => { // author: meizz
 };
 
 const MillisecondToDate = (time) => {
-    var str = '';
+    let str = '';
     if (time) {
         const timeagoInstance = new Timeago();
         str = timeagoInstance.format(time, 'zh_CN');
