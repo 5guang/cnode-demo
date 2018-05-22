@@ -1,7 +1,7 @@
 <template>
     <footer class="cnode_footer">
         <section class="cnode_footer-wrap">
-            <div v-for="(item,index) in pageCount" :key="index" class="cnode_footer-wrap--page" :class="{'cnode_footer-wrap--active': active === item.label,'cnode_footer-wrap--visible': !item.isShow}" @click='gotoPage(item.label)'>{{item.value}}</div>
+            <div v-for="(item,index) in pageCount" :key="index" class="cnode_footer-wrap--page" :class="{'cnode_footer-wrap--active': active === item.label}" @click='gotoPage(item.label)'>{{item.value}}</div>
         </section>
     </footer>
 </template>
@@ -25,10 +25,6 @@ export default {
             type: String,
             default: '',
         },
-        visibility: {
-            type: Boolean,
-            default: true,
-        }
     },
     methods: {
         gotoPage(label) {
@@ -55,9 +51,6 @@ export default {
         }
         &--active{
             color:rgb(128,189,1);
-        }
-        &--visible{
-            visibility: hidden;
         }
     }
 }

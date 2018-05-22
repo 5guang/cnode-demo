@@ -39,7 +39,6 @@
 <script>
 import { mapMutations } from 'vuex';
 import { homeApi } from '@/api/index';
-import { MillisecondToDate } from '@/utils/util';
 
 export default {
   name: 'home',
@@ -120,21 +119,6 @@ export default {
       });
   },
   filters: {
-    menu(val) {
-      let res = '';
-      const menuList = [
-        { label: 'share', value: '分享' },
-        { label: 'good', value: '精华' },
-        { label: 'ask', value: '问答' },
-        { label: 'job', value: '招聘' }
-      ];
-      menuList.forEach(item => {
-        if (item.label === val) {
-          res = item.value;
-        }
-      });
-      return res;
-    },
     topOrGood(val, isTop, isGood) {
       if (isTop) {
         val = '置顶';
@@ -143,9 +127,6 @@ export default {
       }
       return val;
     },
-    lastActiveTime(time) {
-      return MillisecondToDate(time);
-    }
   },
   methods: {
     ...mapMutations(['CHANGE_PARAMS']),
@@ -168,11 +149,9 @@ export default {
         this.menus.forEach((item, i) => {
           if (this.currently === item.label) {
             if (item.params.page === 1) {
-              this.pages[0].isShow = false;
               page = item.params.page;
               return;
             }
-            this.pages[0].isShow = true;
             item.params.page -= 1;
             index = i;
           }
@@ -192,10 +171,6 @@ export default {
         let index;
         this.menus.forEach((item, i) => {
           if (this.currently === item.label) {
-            if (item.params.page >= 1) {
-              console.log(11);
-              this.pages[0].isShow = true;
-            }
             item.params.page += 1;
             index = i;
           }
@@ -212,7 +187,7 @@ export default {
           });
       }
     }
-  }
+  },
 };
 </script>
 
