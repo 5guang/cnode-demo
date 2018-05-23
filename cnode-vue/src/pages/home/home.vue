@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-    <nv-header></nv-header>
+    <nv-header :isShowGoBack='false'></nv-header>
     <section class="cnode_home">
       <nav class="cnode_home--nav">
         <ul class="cnode_home--nav-ul">
@@ -37,8 +37,9 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 import { homeApi } from '@/api/index';
+import { CACHE_HOME } from '@/store/mutations-type';
 
 export default {
   name: 'home',
@@ -107,7 +108,12 @@ export default {
       ]
     };
   },
+  computed: {
+    ...mapState(['cacheHome'])
+    // ...mapMutations(['CACHE_HOME'])
+  },
   created() {
+    // if (!this.cacheHome) {
     homeApi(this.menus[0].params)
       .then(res => {
         if (res.data.success) {
@@ -117,6 +123,7 @@ export default {
       .catch(e => {
         console.error(e);
       });
+    // }
   },
   filters: {
     topOrGood(val, isTop, isGood) {
@@ -126,7 +133,7 @@ export default {
         val = '精华';
       }
       return val;
-    },
+    }
   },
   methods: {
     ...mapMutations(['CHANGE_PARAMS']),
@@ -187,7 +194,7 @@ export default {
           });
       }
     }
-  },
+  }
 };
 </script>
 

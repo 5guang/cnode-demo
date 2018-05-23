@@ -2,7 +2,7 @@ import mutations from './mutations';
 import getters from './getters';
 
 const state = {
-    ad: 'hello'
+    cacheHome: false,
 };
 
 export default {mutations, getters, state}

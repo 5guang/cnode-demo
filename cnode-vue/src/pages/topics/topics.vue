@@ -1,12 +1,12 @@
 <template>
   <section>
-    <nv-header></nv-header>
+    <nv-header @toGoBack='toGoHome'></nv-header>
     <section class='cnode_details'>
       <div class="cnode_details-title">
         <span class="cnode_details-title--tab" v-show="data.top || data.good">置顶</span><h1 class="cnode_details-title--text" v-text="data.title"></h1>
         <div class="cnode_details-title--changes">
           <span class="cnode_details-title--changes-span">发布于 {{data.create_at | lastActiveTime}}</span>
-          <span class="cnode_details-title--changes-span">作者 {{data.author.loginname}}</span>
+          <span class="cnode_details-title--changes-span">作者 {{loginname}}</span>
           <span class="cnode_details-title--changes-span">{{data.visit_count}} 次浏览</span>
           <span class="cnode_details-title--changes-span">最后一次编辑是 {{data.last_reply_at | lastActiveTime}}</span>
           <span class="cnode_details-title--changes-span">来自 {{data.tab | menu}}</span>
@@ -14,8 +14,8 @@
       </div>
       <div class="cnode_details-content" v-html="data.content"></div>
     </section>
-    <div class="cnode_reply--count">{{data.reply_count}} 回复</div>
-    <section class="cnode_reply">
+    <div class="cnode_reply--count" v-if="data.reply_coun > 0">{{data.reply_count}} 回复</div>
+    <section class="cnode_reply" v-if="data.reply_coun > 0">
       <ul class="cnode_reply-information">
         <li class="cnode_reply-information-content" v-for="(item,index) in data.replies" :key="index">
           <div class="cnode_reply-information-content--top">
@@ -39,6 +39,7 @@ export default {
   data() {
     return {
       data: '',
+      loginname: ''
     };
   },
   computed: {
@@ -49,6 +50,7 @@ export default {
       .then(res => {
         if (res.data.success) {
           this.data = res.data.data;
+          this.loginname = res.data.data.author.loginname;
         }
       })
       .catch(err => {
@@ -61,7 +63,16 @@ export default {
         id: this.$route.params.id
       };
       return topicApi(params);
+    },
+    toGoHome() {
+      console.log(11);
+      this.$router.go(-1);
     }
+  },
+  beforeRouteLeave(to, from, next) {
+    // 设置下一个路由的 meta
+    to.meta.keepAlive = true; // 让 A 缓存，即不刷新
+    next();
   }
 };
 </script>
