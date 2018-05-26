@@ -4,34 +4,35 @@
     <section class="cnode_home">
       <nav class="cnode_home--nav">
         <ul class="cnode_home--nav-ul">
-          <li @click='switchMenu(item.label,item.params)' v-for="item in menus" :key="item.label" :class="{'cnode_home--nav-ul_active': currently === item.label, 'cnode_home--nav-ul_li': show}">{{item.value}}</li>
+          <li @click='switchMenu(index,item.params)' v-for="(item,index) in menus" :key="item.label" :class="{'cnode_home--nav-ul_active': home.currentlyMenu === index, 'cnode_home--nav-ul_li': show}">{{item.value}}</li>
         </ul>
       </nav> 
       <section class="cnode_home-wrap">
         <div v-for='item in data' :key="item.id" class="cnode_home-wrap_list">
-          <router-link :to='`/topics/${item.id}`' class="cnode_home-wrap_list_link">
             <div class="cnode_home-wrap_list_link--content">
               <!-- TODO 跳转到用户详情 -->
               <a href="#">
                 <img class="cnode_home-wrap_list_link--content-img" :src="item.author.avatar_url" alt="">
               </a>
-              <div class="cnode_home-wrap_list_link--content-title">
-                  <p class="cnode_home-wrap_list_link--content-title_theme">
-                    <span class="cnode_home-wrap_list_link--content-title-tab" :class="{'cnode_home-wrap_list_link--content-title-top': item.top || item.good}">{{item.tab | menu | topOrGood(item.top,item.good)}}</span>
-                    <span class="cnode_home-wrap_list_link--content-title_reply"><i>{{item.reply_count}}</i>/{{item.visit_count}}</span>
+              <router-link :to='`/topics/${item.id}`' class="cnode_home-wrap_list_link">
+                <div class="cnode_home-wrap_list_link--content-title">
+                    <p class="cnode_home-wrap_list_link--content-title_theme">
+                      <span class="cnode_home-wrap_list_link--content-title-tab" :class="{'cnode_home-wrap_list_link--content-title-top': item.top || item.good}">{{item.tab | menu | topOrGood(item.top,item.good)}}</span>
+                      <span class="cnode_home-wrap_list_link--content-title_reply"><i>{{item.reply_count}}</i>/{{item.visit_count}}</span>
+                    </p>
+                  <p class="cnode_home-wrap_list_link--content-title_txt">
+                      {{item.title}}
                   </p>
-                <p class="cnode_home-wrap_list_link--content-title_txt">
-                    {{item.title}}
-                </p>
-                <time class="cnode_home-wrap_list_link--content-title_time">
-                  {{item.last_reply_at | lastActiveTime}}
-                </time>
-              </div>
+                  <time class="cnode_home-wrap_list_link--content-title_time">
+                    {{item.last_reply_at | lastActiveTime}}
+                  </time>
+                </div>
+              </router-link>
             </div>
-          </router-link>
         </div>
       </section>
     <nv-page :pageCount='pages' @gotoPage='gotoPage' :active='active' :visibility='visibility'></nv-page>
+    <nv-loding v-show="isShoLoding"></nv-loding>
     </section>
   </div>
 </template>
@@ -39,7 +40,6 @@
 <script>
 import { mapState, mapMutations } from 'vuex';
 import { homeApi } from '@/api/index';
-import { CACHE_HOME } from '@/store/mutations-type';
 
 export default {
   name: 'home',
@@ -50,6 +50,7 @@ export default {
       show: true,
       active: '',
       visibility: true,
+      isShoLoding: false,
       pages: [
         { label: 'pre', value: '上一页', isShow: true },
         { label: 'next', value: '下一页', isShow: true }
@@ -109,21 +110,24 @@ export default {
     };
   },
   computed: {
-    ...mapState(['cacheHome'])
-    // ...mapMutations(['CACHE_HOME'])
+    ...mapState(['home'])
   },
   created() {
-    // if (!this.cacheHome) {
-    homeApi(this.menus[0].params)
+    this.isShoLoding = true;
+    this.menus[this.home.currentlyMenu].params.page = this.home.homePage;
+    homeApi(this.menus[this.home.currentlyMenu].params)
       .then(res => {
         if (res.data.success) {
           this.data = res.data.data;
+          setTimeout(() => {
+            this.isShoLoding = false;
+          }, 500);
         }
       })
       .catch(e => {
+        this.isShoLoding = false;
         console.error(e);
       });
-    // }
   },
   filters: {
     topOrGood(val, isTop, isGood) {
@@ -136,13 +140,19 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(['CHANGE_PARAMS']),
-    switchMenu(label, params) {
-      this.currently = label;
+    ...mapMutations(['CHANGE_CURRENTLY_MENU', 'CHANGE_HOME_PAGE']),
+    switchMenu(index, params) {
+      this.menus[this.home.currentlyMenu].params.page = 1;
+      this['CHANGE_HOME_PAGE'](1);
+      this['CHANGE_CURRENTLY_MENU'](index);
+      this.isShoLoding = true;
       homeApi(params)
         .then(res => {
           if (res.data.success) {
             this.data = res.data.data;
+            setTimeout(() => {
+              this.isShoLoding = false;
+            }, 500);
           }
         })
         .catch(e => {
@@ -151,48 +161,48 @@ export default {
     },
     gotoPage(val) {
       this.active = val;
+      let page;
       if (val === 'pre') {
-        let index, page;
-        this.menus.forEach((item, i) => {
-          if (this.currently === item.label) {
-            if (item.params.page === 1) {
-              page = item.params.page;
-              return;
-            }
-            item.params.page -= 1;
-            index = i;
-          }
-        });
-        if (page === 1) return;
-        homeApi(this.menus[index].params)
+        if (this.home.homePage === 1) return;
+        page = this.menus[this.home.currentlyMenu].params.page -= 1;
+        this.isShoLoding = true;
+        homeApi(this.menus[this.home.currentlyMenu].params)
           .then(res => {
             if (res.data.success) {
+              setTimeout(() => {
+                this.isShoLoding = false;
+              }, 500);
               this.data = [];
               this.data = res.data.data;
             }
           })
           .catch(e => {
+            setTimeout(() => {
+              this.isShoLoding = false;
+            }, 500);
             console.error(e);
           });
       } else if (val === 'next') {
-        let index;
-        this.menus.forEach((item, i) => {
-          if (this.currently === item.label) {
-            item.params.page += 1;
-            index = i;
-          }
-        });
-        homeApi(this.menus[index].params)
+        page = this.menus[this.home.currentlyMenu].params.page += 1;
+        this.isShoLoding = true;
+        homeApi(this.menus[this.home.currentlyMenu].params)
           .then(res => {
             if (res.data.success) {
+              setTimeout(() => {
+                this.isShoLoding = false;
+              }, 500);
               this.data = [];
               this.data = res.data.data;
             }
           })
           .catch(e => {
+            setTimeout(() => {
+              this.isShoLoding = false;
+            }, 500);
             console.error(e);
           });
       }
+      this['CHANGE_HOME_PAGE'](page);
     }
   }
 };

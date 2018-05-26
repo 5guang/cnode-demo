@@ -28,6 +28,7 @@
         </li>
       </ul>
     </section>
+    <nv-loding v-show="isShoLoding"></nv-loding>
   </section>
 </template>
 
@@ -39,21 +40,27 @@ export default {
   data() {
     return {
       data: '',
-      loginname: ''
+      loginname: '',
+      isShoLoding: false
     };
   },
   computed: {
     ...mapState(['params', 'home'])
   },
   created() {
+    this.isShoLoding = true;
     this.topicApiServer()
       .then(res => {
         if (res.data.success) {
+          setTimeout(() => {
+            this.isShoLoding = false;
+          }, 500);
           this.data = res.data.data;
           this.loginname = res.data.data.author.loginname;
         }
       })
       .catch(err => {
+        this.isShoLoding = false;
         console.error(err);
       });
   },
@@ -65,7 +72,6 @@ export default {
       return topicApi(params);
     },
     toGoHome() {
-      console.log(11);
       this.$router.go(-1);
     }
   },

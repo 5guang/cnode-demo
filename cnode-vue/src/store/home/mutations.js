@@ -1,9 +1,13 @@
 import {
-    CACHE_HOME,
+    CHANGE_CURRENTLY_MENU,
+    CHANGE_HOME_PAGE,
 } from './mutation-type';
 
 export default {
-    [CACHE_HOME](state, cacheHome) {
-        state.cacheHome = cacheHome;
+    [CHANGE_CURRENTLY_MENU](state, currentlyMenu) {
+        state.currentlyMenu = currentlyMenu;
+    },
+    [CHANGE_HOME_PAGE](state, homePage) {
+        state.homePage = homePage;
     }
 }

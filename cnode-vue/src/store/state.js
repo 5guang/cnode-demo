@@ -1,3 +1,3 @@
 export default {
-    params: '32154hjui4235'
+    test: '123'
 }

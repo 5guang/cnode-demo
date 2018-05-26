@@ -1,6 +1,6 @@
 import Vuex from 'vuex';
 import Vue from 'vue';
-import VuexPersist from 'vuex-persist';
+import createPersistedState from 'vuex-persistedstate';
 import state from './state';
 import mutations from './mutations';
 import actions from './actions';
@@ -9,20 +9,16 @@ import home from './home/index';
 
 Vue.use(Vuex);
 
-const vuexSession = new VuexPersist({
-    storage: window.sessionStorage,
+const vuexSession = createPersistedState({
     key: 'cnode',
-    modules: {
-        home,
-    }
+    storage: window.sessionStorage
 });
-
 const store = new Vuex.Store({
     state,
     mutations,
     actions,
     getters,
-    plugins: [vuexSession.plugin],
+    plugins: [vuexSession],
     modules: {
         home,
     }

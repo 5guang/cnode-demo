@@ -6,12 +6,13 @@
     border-radius: .1rem;
     &-title{
         &--tab{
-            padding: .1rem .2rem;
+            padding: .1rem .15rem;
             color: #fff;
             display: inline-block;
             font-size: .25rem;
             background: rgb(128,189,1);
             border-radius: .05rem;
+            margin-right: .2rem;
         }
         &--text{
             font-size: .4rem;
@@ -37,12 +38,34 @@
         font-size: .3rem;
         padding-top: .3rem;
         line-height: .5rem;
+        overflow-x: hidden;
         li{
             list-style: none;
+        }
+        a{
+            color: #08c;
+            text-decoration: none;
         }
         img{
             width: 100%;
             height: 100%;
+        }
+        pre{
+            font-size: .14rem;
+            border-radius: 0;
+            padding: 0 15px;
+            border: none;
+            margin: .20rem -.1rem;
+            border-width: 1px 0;
+            background: #f7f7f7;
+            -o-tab-size: 4;
+            -moz-tab-size: 4;
+            tab-size: 4;
+            code{
+                color: inherit;
+                white-space: pre-wrap;
+                background-color: transparent;
+            }
         }
     }
 }

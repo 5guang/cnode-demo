@@ -1,9 +1,11 @@
 import  nvHeader  from './nv-header/index';
 import nvPage from './nv-page/index';
+import nvLoding from './nv-loding/index';
 
 const components = {
     nvHeader,
     nvPage,
+    nvLoding,
 }
 
 const install = (Vue, config = {}) => {
