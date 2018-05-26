@@ -84,12 +84,84 @@
     &-information{
         list-style: none;
         &-content{
+            position: relative;
+            border-top: 1px solid #e5e5e5;
             &--top{
+                display: flex;
+                justify-content: space-between;
                 &_left{
-
+                    &--avatar{
+                        position: absolute;
+                        top: 5%;
+                        left: 0%;
+                        &-img{
+                            width: .6rem;
+                            height: .6rem;
+                            border-radius: .1rem;
+                        }
+                    }
+                    &--info{
+                        margin-left: .8rem;
+                        &_author{
+                            padding: .1rem;
+                            color: #fff;
+                            display: inline-block;
+                            font-size: .25rem;
+                            background:#6ba44e;
+                            margin-right: .2rem;
+                        }
+                        span{
+                            font-size: .25rem;
+                        }
+                    }
                 }
                 &_right{
-                    
+                    &-zan{
+                        font-size: .25rem;
+                        &--icon{
+                            ::before{
+                                content: "\f087";
+                            }
+                        }
+                    }
+                }
+            }
+            &--main{
+                margin: .3rem 0;
+                font-size: .3rem;
+                .markdown-text{
+                    font-size: .3rem;
+                    padding-top: .3rem;
+                    line-height: .5rem;
+                    overflow-x: hidden;
+                    li{
+                        list-style: none;
+                    }
+                    a{
+                        color: #08c;
+                        text-decoration: none;
+                    }
+                    img{
+                        width: 100%;
+                        height: 100%;
+                    }
+                    pre{
+                        font-size: .14rem;
+                        border-radius: 0;
+                        padding: 0 15px;
+                        border: none;
+                        margin: .20rem -.1rem;
+                        border-width: 1px 0;
+                        background: #f7f7f7;
+                        -o-tab-size: 4;
+                        -moz-tab-size: 4;
+                        tab-size: 4;
+                        code{
+                            color: inherit;
+                            white-space: pre-wrap;
+                            background-color: transparent;
+                        }
+                    }
                 }
             }
         }

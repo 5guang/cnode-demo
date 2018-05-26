@@ -14,17 +14,31 @@
       </div>
       <div class="cnode_details-content" v-html="data.content"></div>
     </section>
-    <div class="cnode_reply--count" v-if="data.reply_coun > 0">{{data.reply_count}} 回复</div>
-    <section class="cnode_reply" v-if="data.reply_coun > 0">
+    <div class="cnode_reply--count" v-if="data.reply_count > 0">{{data.reply_count}} 回复</div>
+    <section class="cnode_reply" v-if="data.reply_count > 0">
       <ul class="cnode_reply-information">
         <li class="cnode_reply-information-content" v-for="(item,index) in data.replies" :key="index">
           <div class="cnode_reply-information-content--top">
             <div class="cnode_reply-information-content--top_left">
-              {{item.author.loginname}}
+              <span class="cnode_reply-information-content--top_left--info">
+                <span>{{item.author.loginname}}</span>
+                <span>{{index + 1}}楼</span>
+                <span>{{item.create_at | lastActiveTime}}</span>
+                <span class="cnode_reply-information-content--top_left--info_author" v-if="item.author.loginname === loginname">作者</span>
+              </span>
             </div>
-            <div class="cnode_reply-information-content--top_right"></div>
+            <div class="cnode_reply-information-content--top_right">
+              <span class="cnode_reply-information-content--top_right-zan" v-if="item.ups.length > 0">
+                <i class="cnode_reply-information-content--top_right-zan--icon" >赞</i><span>&nbsp {{item.ups.length}}</span>
+              </span>
+            </div>
           </div>
-          <div></div>
+          <span class="cnode_reply-information-content--top_left--avatar">
+              <img class="cnode_reply-information-content--top_left--avatar-img" :src="item.author.avatar_url" alt="title">
+          </span>
+          <div class="cnode_reply-information-content--main">
+            <div v-html="item.content"></div>
+          </div>
         </li>
       </ul>
     </section>

@@ -76,6 +76,7 @@ export default {
     align-items: center;
     &-text {
       color: #5f99b1;
+      font-size: .5rem;
       font-family: Comic Sans MS;
     }
   }
