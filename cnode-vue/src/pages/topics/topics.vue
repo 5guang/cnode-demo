@@ -6,7 +6,7 @@
         <span class="cnode_details-title--tab" v-show="data.top || data.good">置顶</span><h1 class="cnode_details-title--text" v-text="data.title"></h1>
         <div class="cnode_details-title--changes">
           <span class="cnode_details-title--changes-span">发布于 {{data.create_at | lastActiveTime}}</span>
-          <span class="cnode_details-title--changes-span">作者 {{loginname}}</span>
+          <span class="cnode_details-title--changes-span">作者 <span style="color:rgb(98, 154, 238)">{{loginname}}</span></span>
           <span class="cnode_details-title--changes-span">{{data.visit_count}} 次浏览</span>
           <span class="cnode_details-title--changes-span">最后一次编辑是 {{data.last_reply_at | lastActiveTime}}</span>
           <span class="cnode_details-title--changes-span">来自 {{data.tab | menu}}</span>
@@ -36,13 +36,14 @@
           <span class="cnode_reply-information-content--top_left--avatar">
               <img class="cnode_reply-information-content--top_left--avatar-img" :src="item.author.avatar_url" alt="title">
           </span>
-          <div class="cnode_reply-information-content--main">
+          <div class="cnode_reply-information-content--main" >
             <div v-html="item.content"></div>
           </div>
         </li>
       </ul>
     </section>
     <nv-loding v-show="isShoLoding"></nv-loding>
+    <nv-toTop :isShowTop='isShowTop'></nv-toTop>
   </section>
 </template>
 
@@ -55,11 +56,23 @@ export default {
     return {
       data: '',
       loginname: '',
-      isShoLoding: false
+      isShoLoding: false,
+      isShowTop: false
     };
   },
   computed: {
     ...mapState(['params', 'home'])
+  },
+  mounted() {
+    this.$nextTick(() => {
+      window.addEventListener('scroll', () => {
+        if (document.documentElement.scrollTop > 1500) {
+          this.isShowTop = true;
+        } else {
+          this.isShowTop = false;
+        }
+      });
+    });
   },
   created() {
     this.isShoLoding = true;
