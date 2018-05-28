@@ -6,10 +6,15 @@
     <div class="cnode_header--go_home">
       <h1 class="cnode_header--go_home-text">CNODE</h1>
     </div>
+    <div class="cnode_header--login">
+      <p @click="login" class="cnode_header--login-text">登录</p>
+      <!-- <p class="cnode_header--login-text">个人中心</p> -->
+    </div>
   </header>
 </template>
 
 <script>
+import { loginApi } from '@/api';
 export default {
   name: 'nv-header',
   data() {
@@ -32,7 +37,18 @@ export default {
   methods: {
     toGoBack() {
       this.$emit('toGoBack');
-    }
+    },
+    login() {
+      const body = {
+        accesstoken: 'eef85f0b-96de-427d-b7b3-b403c55ab803'
+      } 
+      console.log(111);
+      loginApi('',body).then((res) => {
+        console.log(res)
+      }).catch(err => {
+        console.error(err)
+      })
+    },
   }
 };
 </script>
@@ -78,6 +94,15 @@ export default {
       color: #5f99b1;
       font-size: .5rem;
       font-family: Comic Sans MS;
+    }
+  }
+  &--login{
+    position: absolute;
+    right: 5%;
+    top:50%;
+    &-text{
+      font-size: .25rem;
+      color: rgb(210, 214, 205);
     }
   }
 }

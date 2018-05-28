@@ -1,7 +1,9 @@
 import axios from 'axios';
+import formConfig from './form';
 
+const form = 'form';
 export default (config) => {
-    const { methods, url } = config;
+    const { methods, url, type } = config;
     return (params, body, id = '') => {
         let result;
         switch (methods) {
@@ -12,7 +14,11 @@ export default (config) => {
                 break;
             }
             case 'post': {
-                result = axios.post(url, body);
+                result = axios.post(
+                    url,
+                    body,
+                    type === form ? formConfig : {},
+                    );
                 break;
             }
             default: {

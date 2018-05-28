@@ -10,3 +10,8 @@ export const topicApi = fetch({
     url: `${BASE_PATH}/api/topic`,
     methods: 'get',
 });
+
+export const loginApi = fetch({
+    url: `${BASE_PATH}/api/login`,
+    methods: 'post',
+});

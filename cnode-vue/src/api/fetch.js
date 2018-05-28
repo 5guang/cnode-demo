@@ -3,7 +3,7 @@ import axios from 'axios';
 
 export default (config) => {
     const { methods, url } = config;
-    return (params, body, ) => {
+    return (params, body ) => {
         let result;
         switch (methods) {
             case 'get': {

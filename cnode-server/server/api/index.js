@@ -10,3 +10,9 @@ export const topicParamsApi = fetch({
     url: `${BASE_PATH}/topic`,
     methods: 'get',
 });
+
+export const loginApi = fetch({
+    url: `${BASE_PATH}/accesstoken`,
+    methods: 'post',
+    type: 'form'
+});
