@@ -22,5 +22,5 @@ const store = new Vuex.Store({
     modules: {
         home,
     }
-})
+});
 export default store;

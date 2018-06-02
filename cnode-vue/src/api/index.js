@@ -15,3 +15,8 @@ export const loginApi = fetch({
     url: `${BASE_PATH}/api/login`,
     methods: 'post',
 });
+
+export const replyApi = fetch({
+  url: `${BASE_PATH}/api/reply`,
+  methods: 'post',
+});

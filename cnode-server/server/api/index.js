@@ -16,3 +16,8 @@ export const loginApi = fetch({
     methods: 'post',
     type: 'form'
 });
+export const replyApi = fetch({
+    url: `${BASE_PATH}/reply`,
+    methods: 'post',
+    type: 'form'
+});

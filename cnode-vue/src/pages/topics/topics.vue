@@ -28,8 +28,9 @@
               </span>
             </div>
             <div class="cnode_reply-information-content--top_right">
-              <span class="cnode_reply-information-content--top_right-zan" v-if="item.ups.length > 0">
-                <i class="cnode_reply-information-content--top_right-zan--icon" >赞</i><span>&nbsp {{item.ups.length}}</span>
+              <span class="cnode_reply-information-content--top_right-zan" v-if="item.ups.length > 0" >
+                <i class="cnode_reply-information-content--top_right-zan--icon" :class="{'up': uped(item.ups)}" @click="like(item)">赞</i><span>&nbsp {{item.ups.length}}</span>
+                <span v-if="home.token">回复</span>
               </span>
             </div>
           </div>
@@ -49,7 +50,7 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex';
-import { topicApi } from '@/api/index';
+import { topicApi, replyApi } from '@/api/index';
 
 export default {
   data() {
@@ -57,11 +58,12 @@ export default {
       data: '',
       loginname: '',
       isShoLoding: false,
-      isShowTop: false
+      isShowTop: false,
+      upOrDown: '',
     };
   },
   computed: {
-    ...mapState(['params', 'home'])
+    ...mapState(['params', 'home']),
   },
   mounted() {
     this.$nextTick(() => {
@@ -99,14 +101,40 @@ export default {
       return topicApi(params);
     },
     toGoHome() {
-      this.$router.go(-1);
-    }
+      this.$router.push({
+        name: 'Home',
+      });
+    },
+    like(data) {
+      if (!this.home.token) {
+        alert('您还未登录，请点击右上角登录');
+        return;
+      }
+      const body = {
+        accesstoken: this.home.token,
+        id: data.id,
+      };
+      console.log(body);
+      this.$sync(async () => {
+        try {
+          const res = await replyApi('', body);
+          if (res.data.success) {
+            if (res.data.action === 'up') {
+              data.ups.push(this.data.id);
+            } else {
+              const index = data.ups.indexOf(this.data.id);
+              data.ups.splice(index, 1);
+            }
+          }
+        } catch (e) {
+          console.error(e);
+        }
+      });
+    },
+    uped(ups) {
+      return ups.indexOf(this.data.id) >= 0;
+    },
   },
-  beforeRouteLeave(to, from, next) {
-    // 设置下一个路由的 meta
-    to.meta.keepAlive = true; // 让 A 缓存，即不刷新
-    next();
-  }
 };
 </script>
 

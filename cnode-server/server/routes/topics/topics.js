@@ -6,7 +6,7 @@ export default async (ctx, next) => {
         limit,
         tab,
         mdrender,
-    }
+    };
     const data = await topicsApi(params);
     ctx.body = data.data;
 }

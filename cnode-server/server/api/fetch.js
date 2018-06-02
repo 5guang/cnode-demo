@@ -15,7 +15,7 @@ export default (config) => {
             }
             case 'post': {
                 result = axios.post(
-                    url,
+                    `${url}/${id}`,
                     body,
                     type === form ? formConfig : {},
                     );
